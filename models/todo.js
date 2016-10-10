@@ -1,18 +1,9 @@
-// Clog model
-
 const fs = require('fs');
 const path = require('path');
 
 const uuid = require('uuid');
 
 const filename = path.join(__dirname, '../data/todo.json');
-
-
-
-// getAll = read from file, parse the data
-// write = stringigy some data, write the data string to the filename
-
-// create - push new item
 
 exports.getAll = function(cb) {
   fs.readFile(filename, (err, buffer) => {
@@ -118,14 +109,6 @@ exports.toggle = function(id, cb) {
     newItems.push(taskToToggle[0]);
     exports.write(items, cb);
 
-
-
-
-    // exports.write(newItems, cb);
-
   })
-
-
-
 
 }
