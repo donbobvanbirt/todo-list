@@ -59,9 +59,17 @@ app.post('/todos', (req, res) => {
   res.send('task added');
 })
 
+// TOGGLE
+app.put('/todos/:id', (req, res) => {
+  Todos.toggle(req.params.id, err => {
+    if(err) return res.status(400).send(err);
+    res.send('task updated');
+  })
+})
+
 // DETETE
 app.delete('/todos/:id', (req, res) => {
-  console.log('req.params.id', req.params.id);
+  // console.log('req.params.id', req.params.id);
 
   Todos.remove(req.params.id, err => {
     if(err) return res.status(400).send(err);

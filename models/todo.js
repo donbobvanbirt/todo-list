@@ -50,5 +50,47 @@ exports.create = function(newItem, cb) {
 }
 
 exports.remove = function(id, cb) {
-  
+  exports.getAll((err, items) => {
+    if(err) return cb(err);
+
+    let newItems = items.filter(task => {
+      return task.id !== id;
+    })
+    exports.write(newItems, cb);
+
+  })
+}
+
+exports.toggle = function(id, cb) {
+
+  exports.getAll((err, items) => {
+    if(err) return cb(err);
+
+    let taskToToggle = items.filter(task => {
+      return task.id === id;
+    })
+
+    let newItems = items.filter(task => {
+      return task.id !== id;
+    })
+
+    if (taskToToggle[0].isComplete) {
+      taskToToggle[0].isComplete = false;
+    } else {
+      taskToToggle[0].isComplete = true;
+    }
+
+    newItems.push(taskToToggle[0]);
+    exports.write(items, cb);
+
+
+
+
+    // exports.write(newItems, cb);
+
+  })
+
+
+
+
 }
