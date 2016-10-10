@@ -11,7 +11,7 @@ const app = express();
 //  APP MIDDLEWARE
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // extended will allow different types of objects
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
@@ -25,27 +25,45 @@ app.use(bodyParser.urlencoded({ extended: true })); // extended will allow diffe
 // });
 
 app.get('/todos', (req, res) => {
+  let { complete } = req.query;
+  console.log('complete:', complete);
 
-  Todos.getAll((err, list) => {
-    if(err) {
-      return res.status(400).send(err);
-    }
-    res.send(list);
+  if(complete === 'true') {
+    Todos.getComplete((err, compList) => {
+      if(err) {
+        return res.status(400).send(err);
+      }
+      res.send(compList);
+    })
+  } else if(complete === 'false') {
+    Todos.getIncomplete((err, compList) => {
+      if(err) {
+        return res.status(400).send(err);
+      }
+      res.send(compList);
+    })
+  } else {
 
-  });
+    Todos.getAll((err, list) => {
+      if(err) {
+        return res.status(400).send(err);
+      }
+      res.send(list);
+
+    });
+  }
 
 })
 
 
 
-// using url params. id is dynamic portion
-app.get('/todos/:id', (req, res) => {
-
-  console.log('req.params.id:', req.params.id);
-  console.log('req.query:', req.query);
-
-  res.send(req.params.id);
-})
+// app.get('/todos/:id', (req, res) => {
+//
+//   console.log('req.params.id:', req.params.id);
+//   console.log('req.query:', req.query);
+//
+//   res.send(req.params.id);
+// })
 
 // POST
 app.post('/todos', (req, res) => {

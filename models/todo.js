@@ -28,7 +28,31 @@ exports.getAll = function(cb) {
   })
 }
 
+exports.getComplete = function(cb) {
+  exports.getAll((err, list) => {
+    if(err) return cb(err);
 
+    newList = list.filter(task => {
+      return task.isComplete;
+    })
+    console.log('newList', newList);
+    cb(null, newList);
+
+  });
+}
+
+exports.getIncomplete = function(cb) {
+  exports.getAll((err, list) => {
+    if(err) return cb(err);
+
+    newList = list.filter(task => {
+      return task.isComplete === false;
+    })
+    console.log('newList', newList);
+    cb(null, newList);
+
+  });
+}
 
 exports.write = function(newData, cb) {
   let json = JSON.stringify(newData);
