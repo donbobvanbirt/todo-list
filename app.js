@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // extended will allow diffe
 
 
 // ROUTES
-  // GET /
+// GET /
 // app.get('/', (req, res) => {
 //   let obj = {
 //     message: 'Hello world!'
@@ -47,7 +47,7 @@ app.get('/todos/:id', (req, res) => {
   res.send(req.params.id);
 })
 
-  // POST
+// POST
 app.post('/todos', (req, res) => {
   console.log('req.body:', req.body)  // points to bodyParser
 
@@ -69,13 +69,34 @@ app.put('/todos/:id', (req, res) => {
 
 // DETETE
 app.delete('/todos/:id', (req, res) => {
-  // console.log('req.params.id', req.params.id);
+  let { id } = req.params;
+  console.log('req.params.id', id);
 
-  Todos.remove(req.params.id, err => {
-    if(err) return res.status(400).send(err);
-    res.send('task deleted');
-  })
+  if(id === "complete") {
+    Todos.removeComplete(err => {
+      if(err) {
+        return res.status(400).send(err);
+      }
+      res.send('Completed tasks deleted');
+    })
+  } else {
+    Todos.remove(req.params.id, err => {
+      if(err) return res.status(400).send(err);
+      res.send('task deleted');
+    })
+  }
 })
+
+// app.delete('todos/complete', (req, res) => {
+//
+//   Todos.removeComplete((err, tasks) => {
+//     if(err) {
+//       return res.status(400).send(err);
+//     }
+//     res.send('Completed tasks deleted');
+//   })
+//
+// })
 
 
 

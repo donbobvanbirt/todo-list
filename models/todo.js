@@ -61,6 +61,17 @@ exports.remove = function(id, cb) {
   })
 }
 
+exports.removeComplete = function(cb) {
+  exports.getAll((err, items) => {
+    if(err) return cb(err);
+
+    let newItems = items.filter(task => {
+      return task.isComplete === false;
+    })
+    exports.write(newItems, cb);
+  })
+}
+
 exports.toggle = function(id, cb) {
 
   exports.getAll((err, items) => {
